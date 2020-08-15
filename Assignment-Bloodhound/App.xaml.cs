@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
+﻿using Microsoft.Toolkit.Uwp.Notifications;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Assignment_Bloodhound
@@ -13,5 +9,26 @@ namespace Assignment_Bloodhound
     /// </summary>
     public partial class App : Application
     {
+        protected override async void OnStartup(StartupEventArgs e)
+        {
+            // Register AUMID, COM server, and activator
+            DesktopNotificationManagerCompat.RegisterAumidAndComServer<AppNotificationActivator>("Schuetze.AssignmentBloodhound");
+            DesktopNotificationManagerCompat.RegisterActivator<AppNotificationActivator>();
+
+            // If launched from a toast
+            if (e.Args.Contains("-ToastActivated"))
+            {
+                // AppNotificationActivator code will run after this completes,
+                // and will show a window if necessary.
+            }
+
+            else
+            {
+                // Show the window
+                new MainWindow().Show();
+            }
+
+            base.OnStartup(e);
+        }
     }
 }
