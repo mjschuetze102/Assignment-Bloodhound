@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Uwp.Notifications;
+﻿using Microsoft.QueryStringDotNET;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,10 @@ namespace Assignment_Bloodhound
             ToastContent content = new ToastContent()
             {
                 // Arguments provided to the app when the notification is selected
-                Launch = "action=null",
+                Launch = new QueryString()
+                {
+                    { "action", "null" }
+                }.ToString(),
 
                 // Visual component of the notification
                 Visual = new ToastVisual()
@@ -78,8 +82,12 @@ namespace Assignment_Bloodhound
             };
 
             // Create and show the notification
-            ToastNotification toast = new ToastNotification(content.GetXml());
-            DesktopNotificationManagerCompat.CreateToastNotifier().Show(toast);
+            //ToastNotification toast = new ToastNotification(content.GetXml());
+            //DesktopNotificationManagerCompat.CreateToastNotifier().Show(toast);
+
+            // Create a scheduled notification
+            ScheduledToastNotification toast = new ScheduledToastNotification(content.GetXml(), DateTime.Now.AddSeconds(5));
+            DesktopNotificationManagerCompat.CreateToastNotifier().AddToSchedule(toast);
         }
 
         private void ClearNotifications(object sender, RoutedEventArgs e)
