@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Assignment Bloodhound" Language="1033" Version="1.0.0.0" Manufacturer="Schuetze" UpgradeCode="e69102c0-00ea-4148-a859-2d95b2506ab3">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="Install Assignment Bloodhound" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Install Assignment Bloodhound" />
+			</Directory>
+			<Directory Id="ProgramMenuFolder">
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<DirectoryRef Id="ProgramMenuFolder">
+			<Component Id="ApplicationShortcut" Guid="1e4babcd-1593-46c0-93c4-174f9fc33a92">
+				<Shortcut Id="ApplicationStartMenuShortcut" Name="Assignment Bloodhound" Description="Wix Sample" Target="[INSTALLFOLDER]Assignment-Bloodhound.exe" WorkingDirectory="INSTALLFOLDER">
+
+					<!--AUMID-->
+					<ShortcutProperty Key="System.AppUserModel.ID" Value="Schuetze.AssignmentBloodhound"/>
+
+					<!--COM CLSID-->
+					<ShortcutProperty Key="System.AppUserModel.ToastActivatorCLSID" Value="{99b5292a-6714-456d-bea3-7deb8d8faf81}"/>
+
+				</Shortcut>
+
+				<RemoveFile Id="RemoveApplicationShortcut" Directory="ProgramMenuFolder" Name="Assignment Bloodhound" On="uninstall"/>
+				<RegistryValue Root="HKCU" Key="Software\AssignmentBloodhound" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+			</Component>
+		</DirectoryRef>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="ProductComponent">
+				<File Id="AssignmentBloodhound.exe" Name="AssignmentBloodhound.exe" Source="$(var.Assignment-Bloodhound.TargetPath)" />
+			</Component>
+			<ComponentRef Id="ApplicationShortcut"/>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
